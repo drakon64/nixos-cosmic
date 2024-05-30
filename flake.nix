@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     flake-compat = {
       url = "github:nix-community/flake-compat";
@@ -9,7 +9,7 @@
   };
 
   outputs = { self, nixpkgs, ... }: let
-    forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+    forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
   in {
     lib = {
       packagesFor = pkgs: import ./pkgs { inherit pkgs; };
