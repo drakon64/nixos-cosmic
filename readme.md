@@ -17,7 +17,7 @@ If you have an existing `configuration.nix`, you can use the `nixos-cosmic` flak
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-cosmic = {
-      url = "github:lilyinstarlight/nixos-cosmic";
+      url = "github:drakon64/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
