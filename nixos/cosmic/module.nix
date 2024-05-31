@@ -64,8 +64,7 @@ in
       enable = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-cosmic
-        xdg-desktop-portal-gtk
-      ];
+      ] ++ lib.optional (!config.services.xserver.desktopManager.gnome.enable) pkgs.xdg-desktop-portal-gtk;
       configPackages = lib.mkDefault (with pkgs; [
         xdg-desktop-portal-cosmic
       ]);

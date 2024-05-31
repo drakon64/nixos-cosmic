@@ -30,8 +30,9 @@ jobs:
 
       - uses: cachix/cachix-action@v15
         with:
-          name: cosmic
+          name: drakon64-nixos-cosmic
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: cosmic
 
       - env:
           SYSTEM: ${{ matrix.architecture.system }}
