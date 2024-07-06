@@ -3,6 +3,7 @@
 , fetchFromGitHub
 , libcosmicAppHook
 , pkg-config
+, git # TODO: confirm is `git` is still needed
 , mesa
 , pipewire
 , gst_all_1
@@ -43,7 +44,7 @@ rustPlatform.buildRustPackage {
   separateDebugInfo = true;
 
   nativeBuildInputs = [ libcosmicAppHook rustPlatform.bindgenHook pkg-config ];
-  buildInputs = [ mesa pipewire ];
+  buildInputs = [ git mesa pipewire ]; # TODO: confirm is `git` is still needed
   checkInputs = [ gst_all_1.gstreamer ];
 
   postInstall = ''
