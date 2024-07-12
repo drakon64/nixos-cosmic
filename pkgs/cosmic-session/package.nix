@@ -58,11 +58,11 @@ rustPlatform.buildRustPackage {
     description = "Session manager for the COSMIC desktop environment";
     license = licenses.gpl3Only;
     mainProgram = "cosmic-session";
-    maintainers = with maintainers; [
-      a-kenji
-      nyanbinary
-      lilyinstarlight
-    ];
+#    maintainers = with maintainers; [
+#      a-kenji
+#      nyanbinary
+#      lilyinstarlight
+#    ];
     platforms = platforms.linux;
   };
 }
