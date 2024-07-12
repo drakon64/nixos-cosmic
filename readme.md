@@ -18,7 +18,7 @@ If you have an existing `configuration.nix`, you can use the `nixos-cosmic` flak
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     nixos-cosmic = {
-      url = "github:lilyinstarlight/nixos-cosmic";
+      url = "github:drakon64/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -30,8 +30,8 @@ If you have an existing `configuration.nix`, you can use the `nixos-cosmic` flak
         modules = [
           {
             nix.settings = {
-              substituters = [ "https://cosmic.cachix.org/" ];
-              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+              substituters = [ "https://cosmic.cachix.org/" "https://drakon64-nixos-cosmic.cachix.org" ];
+              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" "drakon64-nixos-cosmic.cachix.org-1:bW2gsh5pbdMxcI3sklvtROM9A8CXtPXgVwmIcO3E3io=" ];
             };
           }
           nixos-cosmic.nixosModules.default
