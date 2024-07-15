@@ -9,13 +9,13 @@
 
 rustPlatform.buildRustPackage {
   pname = "cosmic-randr";
-  version = "0-unstable-2024-05-08";
+  version = "0-unstable-2024-07-15";
 
   src = fetchFromGitHub {
     owner = "pop-os";
     repo = "cosmic-randr";
-    rev = "8ad117e7c57848f113fbc87986e91209f2262b5a";
-    hash = "sha256-cQLTL17/k4uyxhnuJiAChp7ad4RGKwW8fgj77EyCbIA=";
+    rev = "72e18994099b94d98cba7f972d361aeed2514e7f";
+    hash = "sha256-mi7EdFa5misDhl9jftW/VDhZe+o6vKxJ6cthvTuh2Hw=";
   };
 
   cargoLock = {
