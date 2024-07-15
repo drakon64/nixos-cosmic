@@ -9,26 +9,25 @@
       flake = false;
     };
 
-    nixpkgs-mozilla = {
-      url = "github:mozilla/nixpkgs-mozilla/master";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, nixpkgs-mozilla, ... }: let
+  outputs = { self, nixpkgs, nixpkgs-stable, rust-overlay, ... }: let
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
 
     pkgsForSystem = system: import nixpkgs {
       inherit system;
       overlays = [
-        nixpkgs-mozilla.overlays.default
+        rust-overlay.overlays.default
         self.overlays.default
       ];
     };
 
     makeCustomRustPlatform = pkgs: let
-      latestStable = nixpkgs-mozilla.packages.x86_64-linux.default;
+      latestStable = rust-overlay.packages.x86_64-linux.default;
     in pkgs.makeRustPlatform {
       cargo = latestStable;
       rustc = latestStable;
@@ -60,7 +59,9 @@
       default = import ./nixos { cosmicOverlay = self.overlays.default; };
     };
 
-    legacyPackages = forAllSystems (system: let pkgs = nixpkgs.legacyPackages.${system}; in {
+    legacyPackages = forAllSystems (system: let
+      pkgs = pkgsForSystem system;
+    in {
       update = pkgs.writeShellApplication {
         name = "cosmic-update";
 
