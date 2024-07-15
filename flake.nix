@@ -2,25 +2,58 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-#    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     flake-compat = {
       url = "github:nix-community/flake-compat";
       flake = false;
     };
+
+    nixpkgs-mozilla.url = {
+      url = "github:mozilla/nixpkgs-mozilla/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
+    };
   };
 
-  outputs = { self, nixpkgs, ... }: let
+  outputs = { self, nixpkgs, nixpkgs-stable, nixpkgs-mozilla, ... }: let
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
-  in {
-    lib = {
-      packagesFor = pkgs: import ./pkgs { inherit pkgs; };
+
+    pkgsForSystem = system: import nixpkgs {
+      inherit system;
+      overlays = [
+        nixpkgs-mozilla.overlays.default
+        self.overlays.default
+      ];
     };
 
-    packages = forAllSystems (system: self.lib.packagesFor nixpkgs.legacyPackages.${system});
+    makeCustomRustPlatform = pkgs: let
+      latestStable = nixpkgs-mozilla.packages.${system}.default;
+    in pkgs.makeRustPlatform {
+      cargo = latestStable;
+      rustc = latestStable;
+    };
+  in {
+    lib = {
+      packagesFor = system: let
+        pkgs = pkgsForSystem system;
+        customRustPlatform = makeCustomRustPlatform pkgs;
+      in import ./pkgs {
+        inherit pkgs customRustPlatform;
+      };
+    };
+
+    packages = forAllSystems (system:
+      self.lib.packagesFor system
+    );
 
     overlays = {
-      default = final: prev: import ./pkgs { inherit final prev; };
+      default = final: prev: let
+        customRustPlatform = makeCustomRustPlatform final;
+      in import ./pkgs {
+        pkgs = final;
+        inherit customRustPlatform;
+      };
     };
 
     nixosModules = {
@@ -118,7 +151,7 @@
         };
       in nixosConfig.config.system.build.vm // { closure = nixosConfig.config.system.build.toplevel; inherit (nixosConfig) config pkgs; }) { inherit nixpkgs; };
 
-#      vm-stable = self.legacyPackages.${system}.vm.override { nixpkgs = nixpkgs-stable; };
+      vm-stable = self.legacyPackages.${system}.vm.override { nixpkgs = nixpkgs-stable; };
     });
   };
 }
