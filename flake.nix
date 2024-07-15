@@ -28,7 +28,7 @@
     };
 
     makeCustomRustPlatform = pkgs: let
-      latestStable = nixpkgs-mozilla.packages.${system}.default;
+      latestStable = nixpkgs-mozilla.packages.x86_64-linux.default;
     in pkgs.makeRustPlatform {
       cargo = latestStable;
       rustc = latestStable;
