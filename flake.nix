@@ -9,7 +9,7 @@
       flake = false;
     };
 
-    nixpkgs-mozilla.url = {
+    nixpkgs-mozilla = {
       url = "github:mozilla/nixpkgs-mozilla/master";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
