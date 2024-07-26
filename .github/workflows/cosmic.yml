@@ -1,9 +1,9 @@
 name: Cosmic
 
 on:
-#  schedule:
+  schedule:
 #    - cron: '0 23 * * *'
-#    - cron: '0 5 * * *' # Six hours after upstream
+    - cron: '0 5 * * *' # Six hours after upstream
   workflow_dispatch:
 
 jobs:
