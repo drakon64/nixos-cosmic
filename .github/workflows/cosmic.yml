@@ -1,8 +1,8 @@
 name: Cosmic
 
 on:
-  schedule:
-    - cron: '0 23 * * *'
+#  schedule:
+#    - cron: '0 23 * * *'
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,9 @@ jobs:
 
       - uses: cachix/cachix-action@v15
         with:
-          name: cosmic
+          name: drakon64-nixos-cosmic
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: cosmic
 
       - name: Configure git
         run: |
