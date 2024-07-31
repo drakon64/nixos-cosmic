@@ -15,10 +15,10 @@ rustPlatform.buildRustPackage rec {
   version = "0-unstable-2024-06-25";
 
   src = fetchFromGitHub {
-    owner = "pop-os";
+    owner = "drakon64";
     repo = "cosmic-store";
-    rev = "f1f3cdf42efdabdfc84ce3226d87f41b4f11e11a";
-    hash = "sha256-5Rh2beZlHjq6AVlS/5TW5bzgpjCYfPCL/uU6FW/f70M=";
+    rev = "73c6b1ad364a253f7eedf1f16ce62425c60a3c74";
+    hash = "sha256-b445wDthd5xLK//sUzxqzCX0Ni4XZUZEnev8H2MtYLk=";
   };
 
   cargoLock = {
