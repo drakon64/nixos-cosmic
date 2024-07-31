@@ -1,3 +1,5 @@
+# Modifications from https://github.com/lilyinstarlight/nixos-cosmic/issues/221
+
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
@@ -6,26 +8,62 @@
       url = "github:nix-community/flake-compat";
       flake = false;
     };
+
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, ... }: let
+  outputs = { self, nixpkgs, rust-overlay, ... }: let
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
-  in {
-    lib = {
-      packagesFor = pkgs: import ./pkgs { inherit pkgs; };
+
+    pkgsForSystem = system: import nixpkgs {
+      inherit system;
+      overlays = [
+        rust-overlay.overlays.default
+        self.overlays.default
+      ];
     };
 
-    packages = forAllSystems (system: self.lib.packagesFor nixpkgs.legacyPackages.${system});
+    makeCustomRustPlatform = system: pkgs: let
+      latestStable = rust-overlay.packages.${system}.default;
+    in pkgs.makeRustPlatform {
+      cargo = latestStable;
+      rustc = latestStable;
+    };
+
+  in {
+    lib = {
+      packagesFor = system: let
+        pkgs = pkgsForSystem system;
+        customRustPlatform = makeCustomRustPlatform system pkgs;
+      in import ./pkgs {
+        inherit pkgs customRustPlatform;
+      };
+    };
+
+    packages = forAllSystems (system:
+      self.lib.packagesFor system
+    );
 
     overlays = {
-      default = final: prev: import ./pkgs { inherit final prev; };
+      default = final: prev: let
+        system = final.stdenv.hostPlatform.system;
+        customRustPlatform = makeCustomRustPlatform system final;
+      in import ./pkgs {
+        pkgs = final;
+        inherit customRustPlatform;
+      };
     };
 
     nixosModules = {
       default = import ./nixos { cosmicOverlay = self.overlays.default; };
     };
 
-    legacyPackages = forAllSystems (system: let pkgs = nixpkgs.legacyPackages.${system}; in {
+    legacyPackages = forAllSystems (system: let
+      pkgs = pkgsForSystem system;
+    in {
       update = pkgs.writeShellApplication {
         name = "cosmic-update";
 
