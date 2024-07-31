@@ -35,4 +35,4 @@ jobs:
           SYSTEM: ${{ matrix.architecture.system }}
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
-          nix -vL build --show-trace --cores 2 --max-jobs 1 --system "$SYSTEM" .#vm.closure
+          nix build --show-trace --cores 2 --max-jobs 1 --system "$SYSTEM" .#vm.closure
