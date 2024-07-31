@@ -8,7 +8,7 @@
 , gst_all_1
 }:
 
-rustPlatform.buildRustPackage {
+rustPlatform.buildRustPackage rec {
   pname = "xdg-desktop-portal-cosmic";
   version = "0-unstable-2024-06-26";
 
@@ -52,6 +52,8 @@ rustPlatform.buildRustPackage {
     cp data/cosmic.portal $out/share/xdg-desktop-portal/portals/
     cp data/cosmic-portals.conf $out/share/xdg-desktop-portal/
   '';
+
+  env.VERGEN_GIT_SHA = src.rev;
 
   meta = with lib; {
     homepage = "https://github.com/pop-os/xdg-desktop-portal-cosmic";
