@@ -1,8 +1,6 @@
 # NixOS COSMIC
 
-Nix package set and NixOS module for using COSMIC. It is mainly a repository for testing COSMIC as it is developed.
-
-Dedicated development matrix room: <https://matrix.to/#/#cosmic:nixos.org>
+Nix package set and NixOS module for using COSMIC from NixOS. It is mainly a repository for testing COSMIC as it is developed.
 
 ## Usage
 
@@ -15,10 +13,10 @@ If you have an existing `configuration.nix`, you can use the `nixos-cosmic` flak
 ```nix
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     nixos-cosmic = {
-      url = "github:lilyinstarlight/nixos-cosmic";
+      url = "github:drakon64/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -30,8 +28,8 @@ If you have an existing `configuration.nix`, you can use the `nixos-cosmic` flak
         modules = [
           {
             nix.settings = {
-              substituters = [ "https://cosmic.cachix.org/" ];
-              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+              substituters = [ "https://cosmic.cachix.org/" "https://drakon64-nixos-cosmic.cachix.org/" ];
+              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" "drakon64-nixos-cosmic.cachix.org-1:bW2gsh5pbdMxcI3sklvtROM9A8CXtPXgVwmIcO3E3io=" ];
             };
           }
           nixos-cosmic.nixosModules.default
@@ -50,7 +48,7 @@ After setting up binary substituters and NixOS module, enable COSMIC with `servi
 
 ## Build Requirements
 
-Although there is a provided binary cache built against the current `nixos-unstable` branch, if you are not using a current `nixos-unstable` then you may need to build packages locally.
+Although there is a provided binary cache built against the current `nixos-24.05` branch, if you are not using a current `nixos-24.05` then you may need to build packages locally.
 
 Generally you will need roughly 16 GiB of RAM and 40 GiB of disk space, but it can be built with less RAM by reducing build parallelism, either via `--cores 1` or `-j 1` or both, on `nix build`, `nix-build`, and `nixos-rebuild` commands.
 
