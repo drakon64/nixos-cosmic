@@ -32,7 +32,6 @@ in
     # environment packages
     environment.pathsToLink = [ "/share/cosmic" ];
     environment.systemPackages = utils.removePackagesByName (with pkgs; [
-      adwaita-icon-theme
       alsa-utils
       cosmic-applets
       cosmic-applibrary
@@ -55,6 +54,7 @@ in
       cosmic-settings-daemon
       cosmic-term
       cosmic-workspaces-epoch
+      gnome.adwaita-icon-theme
       hicolor-icon-theme
       pop-icon-theme
       pop-launcher
@@ -87,7 +87,7 @@ in
     ]) config.environment.cosmic.excludePackages;
 
     # required features
-    hardware.graphics.enable = true;
+    hardware.opengl.enable = true;
     services.libinput.enable = true;
     xdg.mime.enable = true;
     xdg.icons.enable = true;

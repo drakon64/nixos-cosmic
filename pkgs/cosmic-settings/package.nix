@@ -1,7 +1,7 @@
 { lib
 , stdenv
 , fetchFromGitHub
-, rustPlatform
+, makeRustPlatform
 , libcosmicAppHook
 , cmake
 , cosmic-randr
@@ -17,6 +17,13 @@
 
 let
   libcosmicAppHook' = (libcosmicAppHook.__spliced.buildHost or libcosmicAppHook).override { includeSettings = false; };
+
+  rust-overlay = import <nixpkgs> { overlays = [ (import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz")) ]; };
+
+  rustPlatform = makeRustPlatform {
+    cargo = rust-overlay.rust-bin.stable."1.79.0".default;
+    rustc = rust-overlay.rust-bin.stable."1.79.0".default;
+  };
 in
 
 rustPlatform.buildRustPackage {

@@ -16,11 +16,8 @@ jobs:
             runner: [linux, X64, drakon64/github-actions-runner-aws, EC2-r7a.large, EBS-30GB]
           - system: aarch64-linux
             runner: [linux, ARM64, drakon64/github-actions-runner-aws, EC2-r8g.large, EBS-30GB]
-        attribute:
-          - vm.closure
-          #- vm-stable.closure
 
-    name: Build - ${{ matrix.architecture.system }} - ${{ matrix.attribute }}
+    name: Build - ${{ matrix.architecture.system }}
     runs-on: ${{ matrix.architecture.runner }}
 
     steps:
@@ -30,11 +27,12 @@ jobs:
 
       - uses: cachix/cachix-action@v15
         with:
-          name: cosmic
+          name: drakon64-nixos-cosmic
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: cosmic
 
       - env:
           SYSTEM: ${{ matrix.architecture.system }}
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
-          nix -vL build --show-trace --cores 2 --max-jobs 1 --system "$SYSTEM" ".#$ATTRIBUTE"
+          nix build --cores 2 --max-jobs 1 --system "$SYSTEM" .#vm.closure --impure

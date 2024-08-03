@@ -1,5 +1,5 @@
 { lib
-, rustPlatform
+, makeRustPlatform
 , fetchFromGitHub
 , libcosmicAppHook
 , pkg-config
@@ -7,6 +7,15 @@
 , pipewire
 , gst_all_1
 }:
+
+let
+  rust-overlay = import <nixpkgs> { overlays = [ (import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz")) ]; };
+
+  rustPlatform = makeRustPlatform {
+    cargo = rust-overlay.rust-bin.stable."1.79.0".default;
+    rustc = rust-overlay.rust-bin.stable."1.79.0".default;
+  };
+in
 
 rustPlatform.buildRustPackage rec {
   pname = "xdg-desktop-portal-cosmic";
