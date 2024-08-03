@@ -18,7 +18,16 @@
 let
   libcosmicAppHook' = (libcosmicAppHook.__spliced.buildHost or libcosmicAppHook).override { includeSettings = false; };
 
-  rust-overlay = import <nixpkgs> { overlays = [ (import (builtins.fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz")) ]; };
+  rust-overlay = import <nixpkgs> {
+    overlays = [
+      (import (fetchFromGitHub {
+        owner = "oxalica";
+        repo = "rust-overlay";
+        rev = "419e7fae2731f41dd9b3e34dfe8802be68558b92";
+        hash = "sha256-6Ru37wS8uec626nHVIh6hSpCYB7eNc3RPFa2U//bhw4=";
+      }))
+    ];
+  };
 
   rustPlatform = makeRustPlatform {
     cargo = rust-overlay.rust-bin.stable."1.79.0".default;
