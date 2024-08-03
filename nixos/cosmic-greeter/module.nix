@@ -51,7 +51,7 @@ in
     users.groups.cosmic-greeter = { };
 
     # required features
-    hardware.graphics.enable = true;
+    hardware.opengl.enable = true;
     services.libinput.enable = true;
 
     # required dbus services
