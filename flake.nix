@@ -2,13 +2,18 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     flake-compat = {
       url = "github:nix-community/flake-compat";
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, ... }: let
+  outputs = { self, nixpkgs, rust-overlay, ... }: let
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-linux" ];
   in {
     lib = {
@@ -55,6 +60,8 @@
         nixosConfig = nixpkgs.lib.nixosSystem {
           modules = [
             ({ lib, pkgs, modulesPath, ... }: {
+              nixpkgs.overlays = [ rust-overlay.overlays.default ];
+
               imports = [
                 self.nixosModules.default
 
