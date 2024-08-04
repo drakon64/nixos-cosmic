@@ -23,15 +23,15 @@ let
       (import (fetchFromGitHub {
         owner = "oxalica";
         repo = "rust-overlay";
-        rev = "419e7fae2731f41dd9b3e34dfe8802be68558b92";
-        hash = "sha256-6Ru37wS8uec626nHVIh6hSpCYB7eNc3RPFa2U//bhw4=";
+        rev = "8b81b8ed00b20fd57b24adcb390bd96ea81ecd90";
+        hash = "sha256-bW2ClCWzGCytPbUnqZwU8P1YsLW07uEs80EfHEctc0Q=";
       }))
     ];
   };
 
   rustPlatform = makeRustPlatform {
-    cargo = rust-overlay.rust-bin.stable."1.79.0".default;
-    rustc = rust-overlay.rust-bin.stable."1.79.0".default;
+    cargo = rust-overlay.rust-bin.stable."1.80.0".default;
+    rustc = rust-overlay.rust-bin.stable."1.80.0".default;
   };
 in
 
