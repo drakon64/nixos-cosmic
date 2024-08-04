@@ -20,7 +20,7 @@
       packagesFor = pkgs: import ./pkgs { inherit pkgs; };
     };
 
-    packages = forAllSystems (system: self.lib.packagesFor nixpkgs.legacyPackages.${system});
+    packages = forAllSystems (system: self.lib.packagesFor (nixpkgs.legacyPackages.${system}.extend rust-overlay.overlays.default));
 
     overlays = {
       default = final: prev: import ./pkgs { inherit final prev; };
@@ -30,7 +30,7 @@
       default = import ./nixos { cosmicOverlay = self.overlays.default; };
     };
 
-    legacyPackages = forAllSystems (system: let pkgs = nixpkgs.legacyPackages.${system}; in {
+    legacyPackages = forAllSystems (system: let pkgs = nixpkgs.legacyPackages.${system}.extend rust-overlay.overlays.default; in {
       update = pkgs.writeShellApplication {
         name = "cosmic-update";
 
@@ -60,8 +60,6 @@
         nixosConfig = nixpkgs.lib.nixosSystem {
           modules = [
             ({ lib, pkgs, modulesPath, ... }: {
-              nixpkgs.overlays = [ rust-overlay.overlays.default ];
-
               imports = [
                 self.nixosModules.default
 

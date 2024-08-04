@@ -13,15 +13,15 @@
 , pkg-config
 , udev
 , util-linux
-, pkgs
+, rust-bin
 }:
 
 let
   libcosmicAppHook' = (libcosmicAppHook.__spliced.buildHost or libcosmicAppHook).override { includeSettings = false; };
 
   rustPlatform = makeRustPlatform {
-    cargo = pkgs.rust-bin.stable."1.79.0".default;
-    rustc = pkgs.rust-bin.stable."1.79.0".default;
+    cargo = rust-bin.stable."1.80.0".default;
+    rustc = rust-bin.stable."1.80.0".default;
   };
 in
 
