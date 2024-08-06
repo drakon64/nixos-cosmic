@@ -2,7 +2,7 @@ name: Cosmic
 
 on:
   schedule:
-    - cron: '0 23 * * *'
+    - cron: '0 5 * * *'
   workflow_dispatch:
 
 jobs:
@@ -20,14 +20,16 @@ jobs:
 
       - uses: cachix/cachix-action@v15
         with:
-          name: cosmic
+          name: drakon64-nixos-cosmic
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: cosmic
 
       - name: Configure git
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - run: nix -vL run --show-trace .#update
+      - run: nix run .#update
 
       - id: create-pr
         uses: peter-evans/create-pull-request@v6
