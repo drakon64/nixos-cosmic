@@ -1,5 +1,6 @@
 { lib
 , fetchFromGitHub
+, fetchpatch
 , libcosmicAppHook
 , fontconfig
 , freetype
@@ -21,6 +22,14 @@ rustPlatform.buildRustPackage rec {
     rev = "be808b56cf24d03fc99cf44b0885078a81a16523";
     hash = "sha256-dY4QGQXJFL+yjCYRGCg3NfMLMjlEBSEmxHn68PvhCAQ=";
   };
+
+  patches = [
+    (fetchpatch {
+      name = "fix ctrl or alt + arrows";
+      url = "https://github.com/pop-os/cosmic-term/pull/263.patch";
+      hash = "sha256-/2lsJl5hpmAxfk/9S+psVk2vxIFTohc8Vy3mHNw/zaI=";
+    })
+  ];
 
   cargoLock = {
     lockFile = ./Cargo.lock;
