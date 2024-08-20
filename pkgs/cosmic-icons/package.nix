@@ -32,9 +32,7 @@ stdenvNoCC.mkDerivation rec {
 
   dontDropIconThemeCache = true;
 
-  passthru.updateScript = nix-update-script {
-    extraArgs = [ "--version-regex" "epoch-(.*)" ];
-  };
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "System76 Cosmic icon theme for Linux";

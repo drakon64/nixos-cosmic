@@ -48,9 +48,7 @@ rustPlatform.buildRustPackage {
     cp data/*.svg $out/share/icons/hicolor/scalable/apps/
   '';
 
-  passthru.updateScript = nix-update-script {
-    extraArgs = [ "--version-regex" "epoch-(.*)" ];
-  };
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     homepage = "https://github.com/pop-os/cosmic-workspaces-epoch";

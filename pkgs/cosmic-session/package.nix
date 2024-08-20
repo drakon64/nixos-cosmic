@@ -53,9 +53,7 @@ rustPlatform.buildRustPackage {
   env.XDP_COSMIC = lib.getExe xdg-desktop-portal-cosmic;
 
   passthru = {
-    updateScript = nix-update-script {
-      extraArgs = [ "--version-regex" "epoch-(.*)" ];
-    };
+    updateScript = nix-update-script { };
     providedSessions = [ "cosmic" ];
   };
 
