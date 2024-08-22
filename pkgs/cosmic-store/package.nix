@@ -61,7 +61,7 @@ rustPlatform.buildRustPackage rec {
   env.VERGEN_GIT_SHA = src.rev;
 
   passthru.updateScript = nix-update-script {
-    extraArgs = [ "--version-regex" "epoch-(.*)" ];
+    extraArgs = [ "--version=branch" ];
   };
 
   meta = with lib; {

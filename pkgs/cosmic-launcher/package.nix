@@ -53,7 +53,7 @@ rustPlatform.buildRustPackage {
   env."CARGO_TARGET_${stdenv.hostPlatform.rust.cargoEnvVarTarget}_RUSTFLAGS" = "--cfg tokio_unstable";
 
   passthru.updateScript = nix-update-script {
-    extraArgs = [ "--version-regex" "epoch-(.*)" ];
+    extraArgs = [ "--version=branch" ];
   };
 
   meta = with lib; {

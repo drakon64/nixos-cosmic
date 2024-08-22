@@ -45,7 +45,7 @@ rustPlatform.buildRustPackage {
   env.POLKIT_AGENT_HELPER_1 = "/run/wrappers/bin/polkit-agent-helper-1";
 
   passthru.updateScript = nix-update-script {
-    extraArgs = [ "--version-regex" "epoch-(.*)" ];
+    extraArgs = [ "--version=branch" ];
   };
 
   meta = with lib; {
