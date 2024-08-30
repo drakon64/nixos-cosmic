@@ -27,7 +27,7 @@ rustPlatform.buildRustPackage {
   version = "1.0.0-alpha.1-unstable-2024-08-28";
 
   src = fetchFromGitHub {
-    owner = "pop-os";
+    owner = "drakon64";
     repo = "cosmic-settings";
     rev = "a46587fb6e945b9e213a337bbe3df14acacccae5";
     hash = "sha256-6KdQTdQsI9sSA8xsmJHCj846pbpIF+SFVt/jcwoJd5Q=";
