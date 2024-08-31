@@ -1,5 +1,6 @@
 { lib
 , fetchFromGitHub
+, fetchpatch
 , rustPlatform
 , libcosmicAppHook
 , libinput
@@ -27,6 +28,13 @@ rustPlatform.buildRustPackage {
     hash = "sha256-H6bdoqfKVl7XNKn7YbaSVokLMD6o16iBLGPeT33gGac=";
   };
 
+  patches = [
+    (fetchpatch {
+      url = "https://patch-diff.githubusercontent.com/raw/pop-os/cosmic-comp/pull/779.patch";
+      sha256 = "NP76iqrfUL5t86F5bPIIsNVgG9bYB+kJPdfz3ZCCaGI=";
+    })
+  ];
+
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
@@ -39,7 +47,7 @@ rustPlatform.buildRustPackage {
       "d3d12-0.19.0" = "sha256-usrxQXWLGJDjmIdw1LBXtBvX+CchZDvE8fHC0LjvhD4=";
       "glyphon-0.5.0" = "sha256-j1HrbEpUBqazWqNfJhpyjWuxYAxkvbXzRKeSouUoPWg=";
       "id_tree-1.8.0" = "sha256-uKdKHRfPGt3vagOjhnri3aYY5ar7O3rp2/ivTfM2jT0=";
-      "smithay-0.3.0" = "sha256-YUb7GEERdL8eL57cPZgLKQFdDXDnEOlyaq6oQujMhf8=";
+      "smithay-0.3.0" = "sha256-ah8UzA+SAZExT6G4F3/5LjnmL2qmydqOHZblgSrQyXo=";
       "smithay-clipboard-0.8.0" = "sha256-4InFXm0ahrqFrtNLeqIuE3yeOpxKZJZx+Bc0yQDtv34=";
       "smithay-egui-0.1.0" = "sha256-i8Rlo221v8G7QUAVVBtBNdOtQv1Drv2oj+EhTBak25g=";
       "softbuffer-0.4.1" = "sha256-a0bUFz6O8CWRweNt/OxTvflnPYwO5nm6vsyc/WcXyNg=";
