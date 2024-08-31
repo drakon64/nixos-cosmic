@@ -1,6 +1,7 @@
 { lib
 , stdenv
 , fetchFromGitHub
+, fetchpatch
 , rustPlatform
 , libcosmicAppHook
 , cmake
@@ -32,6 +33,13 @@ rustPlatform.buildRustPackage {
     rev = "b8abfc010007badffcd5b3c60861d5e12fa01df9";
     hash = "sha256-vD2wGmWblgg2xwEWqmw59saxviCtW+RMdI1fCdzM2jQ=";
   };
+
+  #patches = [
+  #  (fetchpatch {
+  #    url = "https://patch-diff.githubusercontent.com/raw/pop-os/cosmic-settings/pull/524.patch";
+  #    sha256 = "xCRYRvIpl4OevpkYt4KnisdqP0dhuGIeV8Sr1dX4gU4=";
+  #  })
+  #];
 
   cargoLock = {
     lockFile = ./Cargo.lock;
