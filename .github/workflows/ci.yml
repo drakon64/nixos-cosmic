@@ -18,7 +18,6 @@ jobs:
           - system: aarch64-linux
             runner: [linux, ARM64, drakon64/github-actions-runner-aws, EC2-m8g.2xlarge, EC2-Spot, EBS-30GB, EBS-32GB-Swap]
         attribute:
-          - vm.closure
           - vm-stable.closure
 
     name: Build - ${{ matrix.architecture.system }} - ${{ matrix.attribute }}
