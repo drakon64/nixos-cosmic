@@ -19,10 +19,6 @@ rustPlatform.buildRustPackage {
     hash = "sha256-VSaoegakYI7BcqtgsCiYM47Qh20csEv/WWdNCdkZ3ys=";
   };
 
-  patches = [
-    ./fix-cargo-lock-hell.patch
-  ];
-
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
