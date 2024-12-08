@@ -13,9 +13,9 @@ jobs:
       matrix:
         architecture:
           - system: x86_64-linux
-            runner: [linux, x64, ktisis, ktisis-n4-highmem-4, ktisis-30GB]
+            runner: [linux, x64, ktisis, ktisis-n4-highmem-8, ktisis-24GB]
 #          - system: aarch64-linux
-#            runner: [linux, ARM64, ktisis, ktisis-c4a-highmem-4, ktisis-30GB]
+#            runner: [linux, ARM64, ktisis, ktisis-c4a-highmem-8, ktisis-24GB]
         attribute:
 #          - vm.closure
           - vm-stable.closure
@@ -37,4 +37,4 @@ jobs:
           SYSTEM: ${{ matrix.architecture.system }}
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
-          nix -vL build --show-trace --cores 4 --max-jobs 1 --system "$SYSTEM" ".#$ATTRIBUTE"
+          nix build --cores 8 --max-jobs 1 --system "$SYSTEM" ".#$ATTRIBUTE"
