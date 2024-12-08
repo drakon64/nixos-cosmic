@@ -3,6 +3,7 @@
   fetchFromGitHub,
   libcosmicAppHook,
   rustPlatform,
+  glib,
   just,
   stdenv,
   nix-update-script,
@@ -40,6 +41,8 @@ rustPlatform.buildRustPackage {
     libcosmicAppHook
     just
   ];
+  
+  buildInputs = [ glib ];
 
   dontUseJustBuild = true;
   dontUseJustCheck = true;
