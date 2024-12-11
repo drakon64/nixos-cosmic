@@ -28,29 +28,29 @@ in
 
 rustPlatform.buildRustPackage {
   pname = "cosmic-settings";
-  version = "1.0.0-alpha.4-unstable-2024-12-09";
+  version = "1.0.0-alpha.4-unstable-2024-12-11";
 
   src = fetchFromGitHub {
     owner = "pop-os";
     repo = "cosmic-settings";
-    rev = "00b8b2bb964637da3a4201cb0dabe4e4a23c2050";
-    hash = "sha256-iFZ23siJXHYLPc7SWmBQk1arKTiUQPy2fusn6tWRK3s=";
+    rev = "0072b79885f0c337e9ee5e6d296165f27c9fc3f4";
+    hash = "sha256-bigj1slVQOtppWEy58TAu4o3V5dBMLLfPbDg6brwqLo=";
   };
 
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
       "accesskit-0.16.0" = "sha256-yeBzocXxuvHmuPGMRebbsYSKSvN+8sUsmaSKlQDpW4w=";
+      "accounts-zbus-0.1.0" = "sha256-9Pq5WFBeIRvP2VZaa3BzoqiQmzN6taa20u7k+2aF3v0=";
       "atomicwrites-0.4.2" = "sha256-QZSuGPrJXh+svMeFWqAXoqZQxLq/WfIiamqvjJNVhxA=";
-      "bluez-zbus-0.1.0" = "sha256-TRXYsnodKjKacc2eVndviEPpma/NNOWstG+ipGcQ0s4=";
       "clipboard_macos-0.1.0" = "sha256-tovB4fjPVVRY8LKn5albMzskFQ+1W5ul4jT5RXx9gKE=";
       "cosmic-bg-config-0.1.0" = "sha256-bmcMZIURozlptsR4si62NTmexqaCX1Yj5bYj49GDehQ=";
       "cosmic-client-toolkit-0.1.0" = "sha256-/DJ/PfqnZHB6VeRi7HXWp0Vruk+jWBe+VCLPpiJeEv4=";
-      "cosmic-comp-config-0.1.0" = "sha256-agKyMb3bDExayWbiS8XnZP4UyuBxVjaYjdDW7tq0SL8=";
-      "cosmic-config-0.1.0" = "sha256-Dy0arxJDJfe7isIcg9fEW/mS2bsmo63+TJUadwkXCIM=";
+      "cosmic-comp-config-0.1.0" = "sha256-v4/ThL21gkrLqHx6chQWaXSCEuh5UvybAp17cDWSQoA=";
+      "cosmic-config-0.1.0" = "sha256-U6zDb+hqI5HY0XjTMwwe5/qTUyKaqjteUdyPWquMXKw=";
+      "cosmic-freedesktop-icons-0.2.6" = "sha256-+GvdoGHlTzu3joGkX89c+4lsc/l6FkbAqN4TD9IO8t8=";
       "cosmic-idle-config-0.1.0" = "sha256-+BOzbFDEoIaYkXs48RJtfomv8qdzIFiEpDpN/zDDgFM=";
-      "cosmic-mime-apps-0.1.0" = "sha256-pEW0UinOAldi0XM2/06iH7B032mXf3VXCdSGuewpW+I=";
-      "cosmic-panel-config-0.1.0" = "sha256-vFYt9Jn61p74jcNzExYOsZHxh9T+0QG7b0yHiAnF4HY=";
+      "cosmic-panel-config-0.1.0" = "sha256-tMOB4ucdBPl/PjU04Za8UCHPgiVW5TPkqWyQbDyhzWk=";
       "cosmic-randr-0.1.0" = "sha256-H7b1y7tujXvaD7E/3nIRAfp2nErASiIxvA1qnYCikt8=";
       "cosmic-settings-config-0.1.0" = "sha256-wwrbZJ/FA6qjeo9M/gIlzVyygiLT3R5OTLhTwr/QSSw=";
       "cosmic-settings-subscriptions-0.1.0" = "sha256-fCWGXR+Ky5W/D46OvZX7VyrmOjlxliZCHgsvPS6MgXY=";
