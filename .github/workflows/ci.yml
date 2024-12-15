@@ -30,11 +30,12 @@ jobs:
 
       - uses: cachix/cachix-action@v15
         with:
-          name: cosmic
+          name: drakon64-nixos-cosmic
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: cosmic
 
       - env:
           SYSTEM: ${{ matrix.architecture.system }}
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
-          nix -vL build --show-trace --cores 4 --max-jobs 1 --system "$SYSTEM" ".#$ATTRIBUTE"
+          nix build --cores 4 --max-jobs 1 --system "$SYSTEM" ".#$ATTRIBUTE"
