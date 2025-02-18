@@ -114,6 +114,7 @@
                           cosmic-ext-applet-clipboard-manager
                           cosmic-ext-applet-emoji-selector
                           cosmic-ext-applet-external-monitor-brightness
+                          cosmic-ext-applet-gui-scale
                           cosmic-ext-calculator
                           cosmic-ext-ctl
                           examine
