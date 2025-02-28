@@ -14,15 +14,13 @@ jobs:
       matrix:
         architecture:
           - system: x86_64-linux
-            runner: [linux, x64, ktisis, ktisis-c3d-highmem-8, ktisis-30GB]
 #          - system: aarch64-linux
-#            runner: [linux, ARM64, ktisis, ktisis-c4a-highmem-4, ktisis-30GB]
         attribute:
 #          - vm.closure
           - vm-stable.closure
 
     name: Build - ${{ matrix.architecture.system }} - ${{ matrix.attribute }}
-    runs-on: ${{ matrix.architecture.runner }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -34,16 +32,44 @@ jobs:
           extra-conf: |
             http2 = false
 
+      - name: Configure nixbuild.net SSH private key
+        run: |
+          sudo touch /root/.ssh/nixbuild
+          sudo chmod 0600 /root/.ssh/nixbuild
+          echo "$NIXBUILD_SSH_KEY" | sudo tee /root/.ssh/nixbuild
+        env:
+          NIXBUILD_SSH_KEY: ${{ secrets.NIXBUILD_SSH_KEY }}
+
+      - name: Configuring OpenSSH for nixbuild.net
+        run: |
+          sudo touch /root/.ssh/ssh_config
+          sudo chmod 0600 /root/.ssh/ssh_config
+          echo "Host eu.nixbuild.net
+            PubkeyAcceptedKeyTypes ssh-ed25519
+            ServerAliveInterval 60
+            IPQoS throughput
+            IdentityFile /root/.ssh/nixbuild" | sudo tee -a /root/.ssh/config
+
+          sudo touch /root/.ssh/known_hosts
+          sudo chmod 0600 /root/.ssh/known_hosts
+          echo "eu.nixbuild.net ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM" | sudo tee -a /root/.ssh/known_hosts
+
+      - run: echo "builders-use-substitutes = true" | sudo tee -a /etc/nix/nix.conf
+        env:
+          SYSTEM: ${{ matrix.architecture.system }}
+          NIXBUILD_SSH_KEY: ${{ secrets.NIXBUILD_SSH_KEY }}
+
       - uses: cachix/cachix-action@v15
         with:
-          name: cosmic
+          name: drakon64-nixos-cosmic
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          extraPullNames: cosmic
 
       - env:
           SYSTEM: ${{ matrix.architecture.system }}
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
-          nix -L build --show-trace --cores 0 --max-jobs 1 --system "$SYSTEM" ".#$ATTRIBUTE"
+          nix -L build --show-trace --system "$SYSTEM" --builders "ssh://eu.nixbuild.net $SYSTEM - 100 1 big-parallel,benchmark" ".#$ATTRIBUTE"
 
       - name: Pin store path in Cachix
         env:
@@ -51,6 +77,6 @@ jobs:
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
           storepath="$(nix eval --raw --system "$SYSTEM" ".#$ATTRIBUTE")"
-          cachix push cosmic "$storepath"
-          cachix pin cosmic "$ATTRIBUTE.$SYSTEM" "$storepath" --keep-revisions 1
+          cachix push drakon64-nixos-cosmic "$storepath"
+          cachix pin drakon64-nixos-cosmic "$ATTRIBUTE.$SYSTEM" "$storepath" --keep-revisions 1
         if: github.event_name == 'merge_group' || ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main')
