@@ -1,11 +1,11 @@
 name: CI
 
 on:
-  #  pull_request:
-  #  merge_group:
-  #  push:
-  #    branches:
-  #      - main
+#  pull_request:
+#  merge_group:
+#  push:
+#    branches:
+#      - main
   workflow_dispatch:
 
 jobs:
@@ -15,8 +15,8 @@ jobs:
         architecture:
           - system: x86_64-linux
             runs-on: ubuntu-latest
-          - system: aarch64-linux
-            runs-on: ubuntu-24.04-arm
+#          - system: aarch64-linux
+#            runs-on: ubuntu-24.04-arm
         attribute:
           #- vm.closure
           - vm-stable.closure
@@ -38,14 +38,13 @@ jobs:
         with:
           name: drakon64-nixos-cosmic
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          extraPullNames: cosmic
 
       - name: Configure nixbuild.net SSH private key
         run: |
-          sudo mkdir -p /root/.ssh
-          sudo touch /root/.ssh/nixbuild
-          sudo chmod 0600 /root/.ssh/nixbuild
-          echo "$NIXBUILD_SSH_KEY" | sudo tee /root/.ssh/nixbuild > /dev/null
+          mkdir -p /home/runner/.ssh
+          touch /home/runner/.ssh/nixbuild
+          chmod 0600 /home/runner/.ssh/nixbuild
+          echo "$NIXBUILD_SSH_KEY" > /home/runner/.ssh/nixbuild
         env:
           NIXBUILD_SSH_KEY: ${{ secrets.NIXBUILD_SSH_KEY }}
 
@@ -55,13 +54,13 @@ jobs:
             PubkeyAcceptedKeyTypes ssh-ed25519
             ServerAliveInterval 60
             IPQoS throughput
-            IdentityFile /root/.ssh/nixbuild
-            SetEnv NIXBUILDNET_SUBSTITUTERS=https://cache.nixos.org,https://drakon64-nixos-cosmic.cachix.org NIXBUILDNET_TRUSTED_PUBLIC_KEYS=cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=,drakon64-nixos-cosmic.cachix.org-1:bW2gsh5pbdMxcI3sklvtROM9A8CXtPXgVwmIcO3E3io=" | sudo tee -a /root/.ssh/config
+            IdentityFile /home/runner/.ssh/nixbuild
+            SetEnv NIXBUILDNET_SUBSTITUTERS=https://cache.nixos.org,https://drakon64-nixos-cosmic.cachix.org NIXBUILDNET_TRUSTED_PUBLIC_KEYS=cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=,drakon64-nixos-cosmic.cachix.org-1:bW2gsh5pbdMxcI3sklvtROM9A8CXtPXgVwmIcO3E3io= NIXBUILDNET_CACHES=cachix://drakon64-nixos-cosmic NIXBUILDNET_ACCESS_TOKENS=cachix://drakon64-nixos-cosmic=WRITE:$CACHIX_AUTH_TOKEN" >> /home/runner/.ssh/config
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Configure OpenSSH known hosts for nixbuild.net
-        run: echo "eu.nixbuild.net ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM" | sudo tee -a /root/.ssh/known_hosts
+        run: echo "eu.nixbuild.net ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM" >> /home/runner/.ssh/known_hosts
 
       - name: Configure Nix for nixbuild.net
         run: |
@@ -74,7 +73,7 @@ jobs:
           SYSTEM: ${{ matrix.architecture.system }}
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
-          nix -L build --show-trace --max-jobs 0 --system "$SYSTEM" ".#$ATTRIBUTE"
+          nix -L build --show-trace --max-jobs 0 --system "$SYSTEM" --eval-store auto --store ssh-ng://eu.nixbuild.net ".#$ATTRIBUTE"
 
       - name: Pin store path in Cachix
         env:
@@ -82,6 +81,5 @@ jobs:
           ATTRIBUTE: ${{ matrix.attribute }}
         run: |
           storepath="$(nix eval --raw --system "$SYSTEM" ".#$ATTRIBUTE")"
-          cachix push drakon64-nixos-cosmic "$storepath"
           cachix pin drakon64-nixos-cosmic "$ATTRIBUTE.$SYSTEM" "$storepath" --keep-revisions 1
         if: github.event_name == 'merge_group' || ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main')
