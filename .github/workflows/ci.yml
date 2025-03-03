@@ -55,7 +55,7 @@ jobs:
             ServerAliveInterval 60
             IPQoS throughput
             IdentityFile /home/runner/.ssh/nixbuild
-            SetEnv NIXBUILDNET_SUBSTITUTERS=https://cache.nixos.org,https://drakon64-nixos-cosmic.cachix.org NIXBUILDNET_TRUSTED_PUBLIC_KEYS=cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=,drakon64-nixos-cosmic.cachix.org-1:bW2gsh5pbdMxcI3sklvtROM9A8CXtPXgVwmIcO3E3io= NIXBUILDNET_CACHES=cachix://drakon64-nixos-cosmic NIXBUILDNET_ACCESS_TOKENS=cachix://drakon64-nixos-cosmic=WRITE:$CACHIX_AUTH_TOKEN" >> /home/runner/.ssh/config
+            SetEnv NIXBUILDNET_SUBSTITUTERS=https://cache.nixos.org,https://cosmic.cachix.org,https://drakon64-nixos-cosmic.cachix.org NIXBUILDNET_TRUSTED_PUBLIC_KEYS=cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=,cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=,drakon64-nixos-cosmic.cachix.org-1:bW2gsh5pbdMxcI3sklvtROM9A8CXtPXgVwmIcO3E3io= NIXBUILDNET_CACHES=cachix://drakon64-nixos-cosmic NIXBUILDNET_ACCESS_TOKENS=cachix://drakon64-nixos-cosmic=WRITE:$CACHIX_AUTH_TOKEN" >> /home/runner/.ssh/config
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
